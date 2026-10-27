@@ -16,4 +16,4 @@ option1 <- option1 |>
   mutate(age = 
            replace(age, age == "4","15"))
 
-write.csv(option1, "Data/YRBSS_Sample.csv")
+write.csv(option1, "Data/YRBSS_Sample.csv") 
