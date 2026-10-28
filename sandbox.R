@@ -6,18 +6,18 @@ raw2 <- read_xlsx("Data/XXHqn.xlsx", col_names = T, na = "")
 set.seed(28640)
 YRBSS <- raw |> 
   sample_n(1000) |> 
-  select(q1, q2, q3, q5, q6, q10, q31, q35) |>
+  select(q1, q2, q3, q5, q6, bmipct, q10, q31, q35, q66, q71) |>
   rename(age = q1, 
          sex = q2,
          grade = q3, 
          height = q5, 
-         weight = q6, 
+         weight = q6,
          texting = q10,
          smoking = q31,
-         vaping = q35)
-#remove NAs
-#YRBSS[YRBSS == "NA"] <- ""
-
+         vaping = q35, 
+         fruit = q66,
+         soda = q71
+         )
 #clean vars
 YRBSS_clean <- YRBSS |> 
   mutate(
@@ -65,9 +65,8 @@ YRBSS_clean <- YRBSS |>
                          "1" ~ "Yes",
                          "2" ~ "No",
                          .default = vaping))
-#coerce age & grade vars to double class
+#coerce $age to double class
 YRBSS_clean$age <- as.double(YRBSS_clean$age)
-YRBSS_clean$grade <- as.double(YRBSS_clean$grade)
 
 #export
 write.csv(YRBSS_clean, "Data/YRBSS.csv", na = "")
