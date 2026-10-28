@@ -6,7 +6,7 @@ raw2 <- read_xlsx("Data/XXHqn.xlsx", col_names = T, na = "")
 set.seed(28640)
 YRBSS <- raw |> 
   sample_n(1000) |> 
-  select(q1, q2, q3, q5, q6, bmipct, q10, q31, q35, q66, q71) |>
+  select(q1, q2, q3, q5, q6, bmipct, q10, q31, q35, q66, q71, q92, q93) |>
   rename(age = q1, 
          sex = q2,
          grade = q3, 
@@ -16,7 +16,9 @@ YRBSS <- raw |>
          smoking = q31,
          vaping = q35, 
          fruit = q66,
-         soda = q71
+         soda = q71,
+         sportsdrink = q92,
+         water = q93
          )
 #clean vars
 YRBSS_clean <- YRBSS |> 
@@ -64,7 +66,48 @@ YRBSS_clean <- YRBSS |>
     vaping = case_match(vaping,
                          "1" ~ "Yes",
                          "2" ~ "No",
-                         .default = vaping))
+                         .default = vaping),
+    #fruit
+    fruit = case_match(fruit,
+                         "1" ~ "I did not eat fruit during the past 7 days",
+                         "2" ~ "1 to 3 times during the past 7 days",
+                         "3" ~ "4 to 6 times during the past 7 days",
+                         "4" ~ "1 time per day",
+                         "5" ~ "2 times per day",
+                         "6" ~ "3 times per day",
+                         "7" ~ "4 or more times per day",
+                         .default = fruit),
+    #soda
+    soda = case_match(soda,
+                         "1" ~ "I did not drink soda or pop during the past 7 days",
+                         "2" ~ "1 to 3 times during the past 7 days",
+                         "3" ~ "4 to 6 times during the past 7 days",
+                         "4" ~ "1 time per day",
+                         "5" ~ "2 times per day",
+                         "6" ~ "3 times per day",
+                         "7" ~ "4 or more times per day",
+                         .default = soda),
+    #sportsdrink
+    sportsdrink = case_match(sportsdrink,
+                             "1" ~ "I did not drink sports drinks during the past 7 days",
+                             "2" ~ "1 to 3 times during the past 7 days",
+                             "3" ~ "4 to 6 times during the past 7 days",
+                             "4" ~ "1 time per day",
+                             "5" ~ "2 times per day",
+                             "6" ~ "3 times per day",
+                             "7" ~ "4 or more times per day",
+                         .default = sportsdrink),
+    #water
+    water = case_match(water,
+                       "1" ~ "I did not drink water during the past 7 days",
+                       "2" ~ "1 to 3 times during the past 7 days",
+                       "3" ~ "4 to 6 times during the past 7 days",
+                       "4" ~ "1 time per day",
+                       "5" ~ "2 times per day",
+                       "6" ~ "3 times per day",
+                       "7" ~ "4 or more times per day",
+                         .default = water)
+    )
 #coerce $age to double class
 YRBSS_clean$age <- as.double(YRBSS_clean$age)
 
